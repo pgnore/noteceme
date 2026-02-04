@@ -1,7 +1,9 @@
 node_modules
+dist
 .env
 .env.local
 .DS_Store
+.vercel/
 .codex/
 key
 key.pub
