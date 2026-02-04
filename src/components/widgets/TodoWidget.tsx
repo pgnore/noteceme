@@ -5,7 +5,7 @@ import { useBoardStore } from '../../store/boardStore'
 
 export default function TodoWidget({ widget }: { widget: Widget }) {
   const { updateWidgetData } = useBoardStore()
-  const data = widget.data as TodosData
+  const data = widget.data as TodosData & { showCompleted?: boolean }
   const [text, setText] = useState('')
 
   const toggle = (id: string) => {
@@ -34,10 +34,14 @@ export default function TodoWidget({ widget }: { widget: Widget }) {
     setText('')
   }
 
+  const visibleItems = data.showCompleted === false
+    ? data.items.filter((item) => !item.done)
+    : data.items
+
   return (
     <div className="widget-fill">
       <div className="widget-scroll">
-        {data.items.map((item) => (
+        {visibleItems.map((item) => (
           <div key={item.id} className={`todo-item ${item.done ? 'done' : ''}`}>
             <span className={`checkbox ${item.done ? 'checked' : ''}`} onClick={() => toggle(item.id)}>
               {item.done ? 'x' : ''}

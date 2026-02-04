@@ -6,7 +6,7 @@ import GifSearchModal from '../modals/GifSearchModal'
 
 export default function ImageWidget({ widget }: { widget: Widget }) {
   const { updateWidgetData, session } = useBoardStore()
-  const data = widget.data as ImageData
+  const data = widget.data as ImageData & { showCaption?: boolean }
   const [gifOpen, setGifOpen] = useState(false)
   const fileRef = useRef<HTMLInputElement | null>(null)
 
@@ -52,12 +52,14 @@ export default function ImageWidget({ widget }: { widget: Widget }) {
             Paste URL
           </button>
         </div>
-        <input
-          className="mood-input"
-          value={data.caption ?? ''}
-          placeholder="Caption"
-          onChange={(event) => updateWidgetData(widget.id, { ...data, caption: event.target.value })}
-        />
+        {data.showCaption !== false && (
+          <input
+            className="mood-input"
+            value={data.caption ?? ''}
+            placeholder="Caption"
+            onChange={(event) => updateWidgetData(widget.id, { ...data, caption: event.target.value })}
+          />
+        )}
       </div>
       <input
         ref={fileRef}

@@ -71,31 +71,37 @@ export type WidgetCommon = {
 export type NotesData = WidgetCommon & {
   title?: string
   content: Record<string, unknown>
+  showToolbar?: boolean
 }
 
 export type TodosData = WidgetCommon & {
   items: TodoItem[]
+  showCompleted?: boolean
 }
 
 export type HabitsData = WidgetCommon & {
   weekStart: string
   habits: Habit[]
+  compact?: boolean
 }
 
 export type ImageData = WidgetCommon & {
   url: string
   caption?: string
   isGif?: boolean
+  showCaption?: boolean
 }
 
 export type MoodData = WidgetCommon & {
   text: string
   emoji?: string
+  singleLine?: boolean
 }
 
 export type CalendarData = WidgetCommon & {
   month: number
   year: number
+  showWeekdays?: boolean
 }
 
 export type ClockData = WidgetCommon & {

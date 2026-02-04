@@ -8,7 +8,7 @@ const weekStartsOn = 1
 
 export default function HabitsWidget({ widget }: { widget: Widget }) {
   const { updateWidgetData } = useBoardStore()
-  const data = widget.data as HabitsData
+  const data = widget.data as HabitsData & { compact?: boolean }
   const [newHabit, setNewHabit] = useState('')
 
   const weekStartDate = data.weekStart
@@ -67,14 +67,14 @@ export default function HabitsWidget({ widget }: { widget: Widget }) {
   return (
     <div className="widget-fill">
       <div className="widget-scroll">
-        <table className="habit-table">
+        <table className={`habit-table ${data.compact === false ? 'relaxed' : 'compact'}`}>
           <thead>
             <tr>
               <th>Habit</th>
               {days.map((day) => (
                 <th key={day.toISOString()}>{format(day, 'EEE')}</th>
               ))}
-              <th>Efficiency</th>
+              <th>Eff.</th>
             </tr>
           </thead>
           <tbody>
@@ -112,8 +112,8 @@ export default function HabitsWidget({ widget }: { widget: Widget }) {
           </tbody>
         </table>
       </div>
-      <p style={{ marginTop: 8, color: 'var(--muted)', fontSize: 'var(--font-size-small)' }}>
-        Weekly efficiency: {overall}% complete
+      <p style={{ marginTop: 6, color: 'var(--muted)', fontSize: 'var(--font-size-small)' }}>
+        Weekly efficiency: {overall}%
       </p>
       <div className="widget-footer">
         <input

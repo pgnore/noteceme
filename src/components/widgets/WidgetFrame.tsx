@@ -36,7 +36,14 @@ export default function WidgetFrame({
           <div className="widget-title muted">Hidden title</div>
         )}
         <div className="widget-actions">
-          <button className="icon-button" onClick={onToggleSettings} aria-label="Widget settings">
+          <button
+            className="icon-button"
+            onClick={(event) => {
+              event.stopPropagation()
+              onToggleSettings()
+            }}
+            aria-label="Widget settings"
+          >
             {settingsOpen ? 'CLOSE' : 'EDIT'}
           </button>
         </div>

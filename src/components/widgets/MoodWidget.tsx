@@ -3,7 +3,7 @@ import { useBoardStore } from '../../store/boardStore'
 
 export default function MoodWidget({ widget }: { widget: Widget }) {
   const { updateWidgetData } = useBoardStore()
-  const data = widget.data as MoodData
+  const data = widget.data as MoodData & { singleLine?: boolean }
 
   return (
     <div className="widget-fill">
@@ -13,13 +13,22 @@ export default function MoodWidget({ widget }: { widget: Widget }) {
         placeholder="Emoji or icon"
         onChange={(event) => updateWidgetData(widget.id, { ...data, emoji: event.target.value })}
       />
-      <textarea
-        className="mood-input"
-        rows={4}
-        value={data.text}
-        placeholder="How does your day feel?"
-        onChange={(event) => updateWidgetData(widget.id, { ...data, text: event.target.value })}
-      />
+      {data.singleLine ? (
+        <input
+          className="mood-input"
+          value={data.text}
+          placeholder="How does your day feel?"
+          onChange={(event) => updateWidgetData(widget.id, { ...data, text: event.target.value })}
+        />
+      ) : (
+        <textarea
+          className="mood-input"
+          rows={4}
+          value={data.text}
+          placeholder="How does your day feel?"
+          onChange={(event) => updateWidgetData(widget.id, { ...data, text: event.target.value })}
+        />
+      )}
     </div>
   )
 }

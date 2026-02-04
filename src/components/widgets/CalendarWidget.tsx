@@ -13,7 +13,7 @@ import { useBoardStore } from '../../store/boardStore'
 
 export default function CalendarWidget({ widget }: { widget: Widget }) {
   const { updateWidgetData } = useBoardStore()
-  const data = widget.data as CalendarData
+  const data = widget.data as CalendarData & { showWeekdays?: boolean }
   const monthDate = new Date(data.year, data.month, 1)
 
   const monthStart = startOfMonth(monthDate)
@@ -59,11 +59,13 @@ export default function CalendarWidget({ widget }: { widget: Widget }) {
             fontSize: 'var(--font-size-small)',
           }}
         >
-          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((label) => (
-            <div key={label} style={{ textAlign: 'center', color: 'var(--muted)' }}>
-              {label}
-            </div>
-          ))}
+          {(data.showWeekdays !== false ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] : []).map(
+            (label) => (
+              <div key={label} style={{ textAlign: 'center', color: 'var(--muted)' }}>
+                {label}
+              </div>
+            )
+          )}
           {rows.map((week, index) =>
             week.map((date) => (
               <div
@@ -72,7 +74,7 @@ export default function CalendarWidget({ widget }: { widget: Widget }) {
                   textAlign: 'center',
                   padding: 6,
                   borderRadius: 10,
-                  background: isToday(date) ? 'rgba(240, 106, 160, 0.2)' : 'transparent',
+                  background: isToday(date) ? 'rgba(239, 111, 165, 0.2)' : 'transparent',
                   color: isSameMonth(date, monthDate) ? 'var(--text)' : 'var(--muted)',
                 }}
               >

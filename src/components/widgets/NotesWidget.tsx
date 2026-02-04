@@ -23,7 +23,7 @@ const toolbarActions = [
 
 export default function NotesWidget({ widget }: { widget: Widget }) {
   const { updateWidgetData, session } = useBoardStore()
-  const data = widget.data as NotesData
+  const data = widget.data as NotesData & { showToolbar?: boolean }
   const [gifOpen, setGifOpen] = useState(false)
   const fileRef = useRef<HTMLInputElement | null>(null)
 
@@ -58,30 +58,32 @@ export default function NotesWidget({ widget }: { widget: Widget }) {
 
   return (
     <div className="widget-fill">
-      <div className="notes-toolbar modern">
-        {toolbarActions.map((item) => (
-          <button key={item.label} onClick={() => item.action(editor)} className="toolbar-pill">
-            {item.label}
+      {data.showToolbar !== false && (
+        <div className="notes-toolbar modern">
+          {toolbarActions.map((item) => (
+            <button key={item.label} onClick={() => item.action(editor)} className="toolbar-pill">
+              {item.label}
+            </button>
+          ))}
+          <button
+            className="toolbar-pill"
+            onClick={() => {
+              const url = window.prompt('Paste a link')
+              if (url) {
+                editor.chain().focus().setLink({ href: url }).run()
+              }
+            }}
+          >
+            Link
           </button>
-        ))}
-        <button
-          className="toolbar-pill"
-          onClick={() => {
-            const url = window.prompt('Paste a link')
-            if (url) {
-              editor.chain().focus().setLink({ href: url }).run()
-            }
-          }}
-        >
-          Link
-        </button>
-        <button className="toolbar-pill" onClick={() => fileRef.current?.click()}>
-          Image
-        </button>
-        <button className="toolbar-pill" onClick={() => setGifOpen(true)}>
-          GIF
-        </button>
-      </div>
+          <button className="toolbar-pill" onClick={() => fileRef.current?.click()}>
+            Image
+          </button>
+          <button className="toolbar-pill" onClick={() => setGifOpen(true)}>
+            GIF
+          </button>
+        </div>
+      )}
       <EditorContent editor={editor} className="tiptap modern" />
       <input
         ref={fileRef}

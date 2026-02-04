@@ -29,6 +29,7 @@ const widgetLabel: Record<WidgetType, string> = {
 
 const defaultClockOrder: Array<'time' | 'date' | 'note'> = ['time', 'date', 'note']
 
+
 export default function Planner() {
   const {
     board,
@@ -60,6 +61,13 @@ export default function Planner() {
     setSettingsOpen((prev) => ({ ...prev, [id]: !prev[id] }))
   }
 
+  const reorder = <T,>(items: T[], from: number, to: number) => {
+    const next = [...items]
+    const [moved] = next.splice(from, 1)
+    next.splice(to, 0, moved)
+    return next
+  }
+
   const renderWidget = (widget: Widget) => {
     switch (widget.type) {
       case 'clock':
@@ -85,17 +93,6 @@ export default function Planner() {
     if (widget.type === 'clock') {
       const data = widget.data as ClockData
       const order = data.layoutOrder ?? defaultClockOrder
-
-      const moveItem = (index: number, direction: number) => {
-        const next = [...order]
-        const target = index + direction
-        if (target < 0 || target >= next.length) return
-        const temp = next[index]
-        next[index] = next[target]
-        next[target] = temp
-        updateWidgetData(widget.id, { ...data, layoutOrder: next })
-      }
-
       return (
         <div className="settings-group">
           <div className="settings-row">
@@ -132,22 +129,129 @@ export default function Planner() {
             />
           </div>
           <div className="settings-row">
-            <label>Layout order</label>
+            <label>Drag to reorder</label>
             <div className="order-list">
               {order.map((item, index) => (
-                <div key={item} className="order-item">
+                <div
+                  key={item}
+                  className="order-item"
+                  draggable
+                  onDragStart={(event) => {
+                    event.dataTransfer.setData('text/plain', String(index))
+                  }}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={(event) => {
+                    const from = Number(event.dataTransfer.getData('text/plain'))
+                    if (Number.isNaN(from)) return
+                    const next = reorder(order, from, index)
+                    updateWidgetData(widget.id, { ...data, layoutOrder: next })
+                  }}
+                >
                   <span>{item}</span>
-                  <div className="order-buttons">
-                    <button className="button ghost" onClick={() => moveItem(index, -1)}>
-                      Up
-                    </button>
-                    <button className="button ghost" onClick={() => moveItem(index, 1)}>
-                      Down
-                    </button>
-                  </div>
+                  <span className="muted">drag</span>
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )
+    }
+
+    if (widget.type === 'notes') {
+      const data = widget.data as any
+      return (
+        <div className="settings-group">
+          <div className="settings-row inline">
+            <label>Show toolbar</label>
+            <input
+              type="checkbox"
+              checked={data.showToolbar !== false}
+              onChange={(event) => updateWidgetData(widget.id, { ...data, showToolbar: event.target.checked })}
+            />
+          </div>
+        </div>
+      )
+    }
+
+    if (widget.type === 'todos') {
+      const data = widget.data as any
+      return (
+        <div className="settings-group">
+          <div className="settings-row inline">
+            <label>Show completed</label>
+            <input
+              type="checkbox"
+              checked={data.showCompleted !== false}
+              onChange={(event) =>
+                updateWidgetData(widget.id, { ...data, showCompleted: event.target.checked })
+              }
+            />
+          </div>
+        </div>
+      )
+    }
+
+    if (widget.type === 'habits') {
+      const data = widget.data as any
+      return (
+        <div className="settings-group">
+          <div className="settings-row inline">
+            <label>Compact mode</label>
+            <input
+              type="checkbox"
+              checked={data.compact !== false}
+              onChange={(event) => updateWidgetData(widget.id, { ...data, compact: event.target.checked })}
+            />
+          </div>
+        </div>
+      )
+    }
+
+    if (widget.type === 'image') {
+      const data = widget.data as any
+      return (
+        <div className="settings-group">
+          <div className="settings-row inline">
+            <label>Show caption</label>
+            <input
+              type="checkbox"
+              checked={data.showCaption !== false}
+              onChange={(event) => updateWidgetData(widget.id, { ...data, showCaption: event.target.checked })}
+            />
+          </div>
+        </div>
+      )
+    }
+
+    if (widget.type === 'calendar') {
+      const data = widget.data as any
+      return (
+        <div className="settings-group">
+          <div className="settings-row inline">
+            <label>Show weekday labels</label>
+            <input
+              type="checkbox"
+              checked={data.showWeekdays !== false}
+              onChange={(event) =>
+                updateWidgetData(widget.id, { ...data, showWeekdays: event.target.checked })
+              }
+            />
+          </div>
+        </div>
+      )
+    }
+
+    if (widget.type === 'mood') {
+      const data = widget.data as any
+      return (
+        <div className="settings-group">
+          <div className="settings-row inline">
+            <label>Single line</label>
+            <input
+              type="checkbox"
+              checked={data.singleLine === true}
+              onChange={(event) => updateWidgetData(widget.id, { ...data, singleLine: event.target.checked })}
+            />
           </div>
         </div>
       )
@@ -211,6 +315,7 @@ export default function Planner() {
           isDraggable
           isResizable
           draggableHandle=".widget-header"
+          draggableCancel=".widget-actions, .widget-settings, input, textarea, select, button, .tiptap"
           onLayoutChange={(_layout, allLayouts) => {
             applyLayouts(allLayouts)
           }}

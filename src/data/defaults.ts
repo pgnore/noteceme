@@ -137,6 +137,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       data: {
         weekStart: weekStart.toISOString(),
         showTitle: true,
+        compact: true,
         habits: defaultHabits.map((name) => ({
           id: nanoid(),
           name,
@@ -152,6 +153,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       layout: baseLayouts.todos,
       data: {
         showTitle: true,
+        showCompleted: true,
         items: [
           { id: nanoid(), text: 'Light a candle', done: false, order: 0 },
           { id: nanoid(), text: 'Plan cute outfit', done: true, order: 1 },
@@ -168,6 +170,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       data: {
         title: 'Main character energy',
         showTitle: true,
+        showToolbar: true,
         content: defaultNotesContent,
       },
     },
@@ -182,6 +185,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
         caption: 'Drop an image or GIF',
         isGif: false,
         showTitle: true,
+        showCaption: true,
       },
     },
     {
@@ -194,6 +198,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
         month: new Date().getMonth(),
         year: new Date().getFullYear(),
         showTitle: true,
+        showWeekdays: true,
       },
     },
     {
@@ -206,6 +211,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
         text: 'Feeling soft, cozy, and adored.',
         emoji: ':)',
         showTitle: true,
+        singleLine: false,
       },
     },
   ]
