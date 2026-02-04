@@ -29,6 +29,6 @@ export function applyTheme(theme: Theme) {
   root.style.setProperty('--pattern', patterns[theme.backgroundPattern])
 }
 
-export const fontOptions = ['"Fraunces", serif', '"DM Serif Display", serif']
+export const fontOptions = ['"Instrument Serif", serif', '"DM Serif Display", serif']
 
-export const bodyFontOptions = ['"Quicksand", sans-serif', '"Nunito", sans-serif']
+export const bodyFontOptions = ['"Manrope", sans-serif', '"Nunito", sans-serif']

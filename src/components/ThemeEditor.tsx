@@ -156,8 +156,8 @@ export default function ThemeEditor() {
         <label>Border radius</label>
         <input
           type="range"
-          min={8}
-          max={30}
+          min={6}
+          max={20}
           value={controls.borderRadius}
           onChange={(event) => update({ borderRadius: Number(event.target.value) })}
         />
@@ -167,7 +167,7 @@ export default function ThemeEditor() {
         <input
           type="range"
           min={4}
-          max={30}
+          max={24}
           value={controls.shadow}
           onChange={(event) => update({ shadow: Number(event.target.value) })}
         />

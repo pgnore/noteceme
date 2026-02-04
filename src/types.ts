@@ -96,7 +96,7 @@ export type CalendarData = {
 
 export type ClockData = {
   timezone?: string
-  style?: 'digital' | 'soft'
+  style?: 'digital' | 'serif' | 'minimal'
 }
 
 export type WidgetData =

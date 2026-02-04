@@ -3,25 +3,25 @@ import { nanoid } from 'nanoid'
 import type { Board, Theme, Widget, WidgetLayout, WidgetType } from '../types'
 
 export const defaultTheme: Theme = {
-  fontHeading: '"Fraunces", serif',
-  fontBody: '"Quicksand", sans-serif',
+  fontHeading: '"Instrument Serif", serif',
+  fontBody: '"Manrope", sans-serif',
   fontSizes: {
     heading: 28,
     body: 16,
     small: 13,
   },
   colors: {
-    bg: '#f8edf2',
-    surface: '#fff7fb',
-    text: '#4a2c3a',
-    accent: '#f06aa0',
-    muted: '#b48aa3',
-    cardBorder: '#f4cadc',
+    bg: '#f4e9ef',
+    surface: '#fff8fb',
+    text: '#3b2430',
+    accent: '#ef6fa5',
+    muted: '#9b6f86',
+    cardBorder: '#e8c1d2',
   },
-  borderRadius: 18,
-  shadow: 22,
-  gridGap: 16,
-  backgroundPattern: 'strawberry',
+  borderRadius: 12,
+  shadow: 18,
+  gridGap: 14,
+  backgroundPattern: 'gingham',
 }
 
 export const defaultBoard = (userId: string): Board => ({
@@ -126,7 +126,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       type: 'clock',
       title: 'Soft clock',
       layout: baseLayouts.clock,
-      data: { style: 'digital' },
+      data: { style: 'serif' },
     },
     {
       id: nanoid(),
