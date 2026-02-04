@@ -201,21 +201,22 @@ export const useBoardStore = create<BoardState>((set, get) => ({
       title: type === 'image' ? 'Image' : type.charAt(0).toUpperCase() + type.slice(1),
       layout: layoutForType(type),
       data: type === 'notes'
-        ? { title: 'Notes', content: { type: 'doc', content: [] } }
+        ? { title: 'Notes', content: { type: 'doc', content: [] }, showTitle: true }
         : type === 'todos'
-        ? { items: [] }
+        ? { items: [], showTitle: true }
         : type === 'habits'
         ? {
             weekStart: new Date().toISOString(),
             habits: [],
+            showTitle: true,
           }
         : type === 'image'
-        ? { url: '', caption: '', isGif: false }
+        ? { url: '', caption: '', isGif: false, showTitle: true }
         : type === 'calendar'
-        ? { month: new Date().getMonth(), year: new Date().getFullYear() }
+        ? { month: new Date().getMonth(), year: new Date().getFullYear(), showTitle: true }
         : type === 'mood'
-        ? { text: '', emoji: '' }
-        : { style: 'digital' },
+        ? { text: '', emoji: '', showTitle: true }
+        : { style: 'digital', showTitle: true },
     }
     const widgets = [...get().widgets, newWidget]
     set({ widgets })

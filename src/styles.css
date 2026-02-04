@@ -1,20 +1,20 @@
 :root {
-  --bg: #f8edf2;
-  --surface: #fff7fb;
-  --text: #4a2c3a;
-  --accent: #f06aa0;
-  --muted: #b48aa3;
-  --card-border: #f4cadc;
-  --radius: 12px;
-  --shadow: 18px;
+  --bg: #f4e9ef;
+  --surface: #fff8fb;
+  --text: #3b2430;
+  --accent: #ef6fa5;
+  --muted: #9b6f86;
+  --card-border: #e8c1d2;
+  --radius: 10px;
+  --shadow: 14px;
   --grid-gap: 14px;
   --font-heading: "Instrument Serif", serif;
   --font-body: "Manrope", sans-serif;
-  --font-size-heading: 28px;
-  --font-size-body: 16px;
-  --font-size-small: 13px;
-  --pattern: radial-gradient(circle at 10px 12px, rgba(240, 106, 160, 0.18) 2px, transparent 0) 0 0 / 28px 28px,
-    radial-gradient(circle at 22px 20px, rgba(250, 184, 207, 0.25) 2px, transparent 0) 0 0 / 28px 28px;
+  --font-size-heading: 26px;
+  --font-size-body: 15px;
+  --font-size-small: 12px;
+  --pattern: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 50%, transparent 50%) 0 0 / 22px 22px,
+    linear-gradient(rgba(255, 255, 255, 0.35) 50%, transparent 50%) 0 0 / 22px 22px;
 }
 
 * {
@@ -34,11 +34,9 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(circle at 20% 20%, rgba(240, 106, 160, 0.08), transparent 50%),
-    radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.6), transparent 40%),
-    linear-gradient(120deg, rgba(255, 255, 255, 0.3), transparent 60%);
-  mix-blend-mode: screen;
-  opacity: 0.8;
+  background-image: radial-gradient(circle at 18% 20%, rgba(240, 106, 160, 0.08), transparent 45%),
+    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.6), transparent 40%);
+  opacity: 0.75;
 }
 
 a {
@@ -65,15 +63,15 @@ button {
   align-items: center;
   gap: 12px;
   font-family: var(--font-heading);
-  font-size: 24px;
-  letter-spacing: 0.5px;
+  font-size: 22px;
+  letter-spacing: 0.4px;
 }
 
 .logo-badge {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #f6b9d0, #f06aa0);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f6b9d0, #ef6fa5);
   display: grid;
   place-items: center;
   color: white;
@@ -88,15 +86,15 @@ button {
 }
 
 .button {
-  border: none;
-  padding: 10px 16px;
+  border: 1px solid transparent;
+  padding: 9px 14px;
   border-radius: 999px;
   background: var(--accent);
   color: white;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 8px 20px rgba(240, 106, 160, 0.35);
+  box-shadow: 0 6px 16px rgba(239, 111, 165, 0.25);
 }
 
 .button:hover {
@@ -104,8 +102,9 @@ button {
 }
 
 .button.secondary {
-  background: #f7d6e4;
+  background: rgba(255, 255, 255, 0.7);
   color: #7b3f58;
+  border: 1px solid var(--card-border);
   box-shadow: none;
 }
 
@@ -126,12 +125,19 @@ button {
   color: white;
 }
 
+.button.danger {
+  background: rgba(163, 60, 93, 0.12);
+  color: #a33c5d;
+  border: 1px solid rgba(163, 60, 93, 0.3);
+  box-shadow: none;
+}
+
 .hero {
   margin: 0 28px 24px;
-  padding: 32px;
-  border-radius: calc(var(--radius) + 8px);
-  background: linear-gradient(135deg, rgba(246, 185, 208, 0.7), rgba(255, 247, 251, 0.9)),
-    radial-gradient(circle at top right, rgba(240, 106, 160, 0.25), transparent 60%);
+  padding: 28px;
+  border-radius: calc(var(--radius) + 6px);
+  background: linear-gradient(135deg, rgba(246, 185, 208, 0.65), rgba(255, 247, 251, 0.95)),
+    radial-gradient(circle at top right, rgba(240, 106, 160, 0.2), transparent 60%);
   border: 1px solid rgba(232, 193, 210, 0.8);
   position: relative;
   overflow: hidden;
@@ -141,7 +147,7 @@ button {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.4), transparent 40%);
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.4), transparent 50%);
   pointer-events: none;
 }
 
@@ -190,8 +196,28 @@ button {
 }
 
 .react-grid-placeholder {
-  background: rgba(240, 106, 160, 0.18);
+  background: rgba(239, 111, 165, 0.14);
   border-radius: var(--radius);
+}
+
+.react-resizable-handle {
+  width: 18px;
+  height: 18px;
+  background: rgba(239, 111, 165, 0.3);
+  border-radius: 6px 0 0 0;
+  bottom: 0;
+  right: 0;
+}
+
+.react-resizable-handle::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid rgba(59, 36, 48, 0.55);
+  border-bottom: 2px solid rgba(59, 36, 48, 0.55);
 }
 
 .widget {
@@ -209,15 +235,10 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid rgba(232, 193, 210, 0.8);
   cursor: grab;
-}
-
-.widget-header input.widget-title {
-  flex: 1;
-  max-width: 70%;
 }
 
 .widget-title {
@@ -226,13 +247,17 @@ button {
   color: var(--text);
 }
 
+.widget-title.muted {
+  color: var(--muted);
+}
+
 .widget-actions {
   display: flex;
   gap: 6px;
 }
 
 .widget-body {
-  padding: 16px;
+  padding: 14px;
   flex: 1;
   overflow: hidden;
 }
@@ -240,7 +265,7 @@ button {
 .widget-fill {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   height: 100%;
 }
 
@@ -257,6 +282,62 @@ button {
   flex-wrap: wrap;
 }
 
+.widget-settings {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(232, 193, 210, 0.6);
+  background: rgba(255, 255, 255, 0.85);
+  display: grid;
+  gap: 10px;
+}
+
+.settings-row {
+  display: grid;
+  gap: 6px;
+}
+
+.settings-row.inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-row label {
+  font-size: var(--font-size-small);
+  color: var(--muted);
+}
+
+.settings-row input,
+.settings-row select {
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+  padding: 8px 10px;
+}
+
+.settings-group {
+  display: grid;
+  gap: 10px;
+}
+
+.order-list {
+  display: grid;
+  gap: 6px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(232, 193, 210, 0.6);
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.order-buttons {
+  display: flex;
+  gap: 6px;
+}
+
 .widget-control {
   border: 1px solid var(--card-border);
   background: rgba(255, 255, 255, 0.9);
@@ -266,25 +347,22 @@ button {
   cursor: pointer;
 }
 
-.widget-control.danger {
-  color: #a33c5d;
-  border-color: rgba(163, 60, 93, 0.35);
-}
-
 .icon-button {
   border: none;
-  background: rgba(240, 106, 160, 0.12);
+  background: rgba(239, 111, 165, 0.12);
   color: #a33c5d;
   border-radius: 999px;
-  padding: 4px 8px;
+  padding: 4px 10px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
 }
 
 .clock-display {
   font-family: var(--font-heading);
-  font-size: 42px;
-  letter-spacing: 2px;
+  font-size: 40px;
+  letter-spacing: 1px;
 }
 
 .clock-display.digital {
@@ -300,7 +378,7 @@ button {
 
 .clock-display.minimal {
   font-family: "Manrope", sans-serif;
-  font-size: 36px;
+  font-size: 34px;
   letter-spacing: 0.5px;
 }
 
@@ -309,16 +387,74 @@ button {
   font-size: var(--font-size-small);
 }
 
+.clock-note {
+  color: var(--muted);
+  font-size: var(--font-size-small);
+}
+
+.analog-clock {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 193, 210, 0.9);
+  position: relative;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.analog-clock .clock-face {
+  position: absolute;
+  inset: 8px;
+  border-radius: 999px;
+  border: 1px dashed rgba(232, 193, 210, 0.6);
+}
+
+.analog-clock .hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  background: #a33c5d;
+}
+
+.analog-clock .hand.hour {
+  width: 3px;
+  height: 28px;
+}
+
+.analog-clock .hand.minute {
+  width: 2px;
+  height: 36px;
+  background: #3b2430;
+}
+
+.analog-clock .hand.second {
+  width: 1px;
+  height: 42px;
+  background: rgba(239, 111, 165, 0.8);
+}
+
+.analog-clock .center-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #3b2430;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .habit-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--font-size-small);
+  font-size: 11px;
 }
 
 .habit-table th,
 .habit-table td {
   text-align: center;
-  padding: 6px 4px;
+  padding: 4px 2px;
 }
 
 .habit-table th:first-child,
@@ -336,18 +472,20 @@ button {
   border: none;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 999px;
-  padding: 4px 8px;
-  font-size: var(--font-size-small);
+  padding: 2px 8px;
+  font-size: 11px;
+  max-width: 120px;
 }
 
 .checkbox {
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
   border: 1px solid var(--card-border);
   display: inline-grid;
   place-items: center;
   cursor: pointer;
+  font-size: 10px;
 }
 
 .checkbox.checked {
@@ -358,8 +496,8 @@ button {
 .todo-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 0;
+  gap: 8px;
+  padding: 4px 0;
 }
 
 .todo-item input[type='text'] {
@@ -380,22 +518,22 @@ button {
   gap: 6px;
 }
 
+.notes-toolbar.modern {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 8px;
+  border: 1px solid var(--card-border);
+}
+
 .notes-toolbar.modern .toolbar-pill {
   backdrop-filter: blur(6px);
 }
 
-.notes-toolbar.modern {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
-  padding: 10px;
-  border: 1px solid var(--card-border);
-}
-
 .toolbar-pill {
   border: none;
-  background: rgba(240, 106, 160, 0.12);
+  background: rgba(239, 111, 165, 0.12);
   color: var(--text);
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 999px;
   font-size: var(--font-size-small);
   cursor: pointer;
@@ -404,7 +542,7 @@ button {
 .tiptap {
   min-height: 200px;
   padding: 12px;
-  border-radius: 14px;
+  border-radius: 12px;
   background: white;
   border: 1px solid var(--card-border);
   font-size: var(--font-size-body);
@@ -412,8 +550,8 @@ button {
 
 .tiptap.modern {
   background: rgba(255, 255, 255, 0.9);
-  border-radius: 18px;
-  box-shadow: inset 0 0 0 1px rgba(240, 106, 160, 0.18);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px rgba(239, 111, 165, 0.12);
 }
 
 .tiptap img {
@@ -424,7 +562,7 @@ button {
 .image-tile {
   width: 100%;
   height: 100%;
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px dashed rgba(232, 193, 210, 0.9);
   display: grid;
   place-items: center;
@@ -441,15 +579,15 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 16px;
+  border-radius: 12px;
 }
 
 .mood-input {
   width: 100%;
   border: none;
   background: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
-  padding: 12px;
+  border-radius: 8px;
+  padding: 10px;
   font-size: var(--font-size-body);
 }
 
@@ -503,11 +641,11 @@ button {
 }
 
 .modal {
-  width: min(720px, 92vw);
-  max-height: 80vh;
+  width: min(820px, 92vw);
+  max-height: 82vh;
   overflow: hidden;
   background: white;
-  border-radius: 20px;
+  border-radius: 16px;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -530,8 +668,8 @@ button {
 
 .modal-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
   overflow-y: auto;
   padding-right: 6px;
 }
@@ -540,16 +678,22 @@ button {
   width: 100%;
   border-radius: 12px;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 16px rgba(59, 36, 48, 0.08);
+}
+
+.modal-grid img:hover {
+  transform: translateY(-2px);
 }
 
 .auth-card {
   width: min(420px, 92vw);
   margin: 10vh auto 0;
   padding: 24px;
-  border-radius: 20px;
+  border-radius: 16px;
   background: white;
   border: 1px solid var(--card-border);
-  box-shadow: 0 20px 40px rgba(240, 106, 160, 0.2);
+  box-shadow: 0 20px 40px rgba(239, 111, 165, 0.2);
 }
 
 .auth-card h2 {

@@ -64,39 +64,46 @@ export type Habit = {
   checks: boolean[]
 }
 
-export type NotesData = {
+export type WidgetCommon = {
+  showTitle?: boolean
+}
+
+export type NotesData = WidgetCommon & {
   title?: string
   content: Record<string, unknown>
 }
 
-export type TodosData = {
+export type TodosData = WidgetCommon & {
   items: TodoItem[]
 }
 
-export type HabitsData = {
+export type HabitsData = WidgetCommon & {
   weekStart: string
   habits: Habit[]
 }
 
-export type ImageData = {
+export type ImageData = WidgetCommon & {
   url: string
   caption?: string
   isGif?: boolean
 }
 
-export type MoodData = {
+export type MoodData = WidgetCommon & {
   text: string
   emoji?: string
 }
 
-export type CalendarData = {
+export type CalendarData = WidgetCommon & {
   month: number
   year: number
 }
 
-export type ClockData = {
+export type ClockData = WidgetCommon & {
   timezone?: string
-  style?: 'digital' | 'serif' | 'minimal'
+  style?: 'digital' | 'serif' | 'minimal' | 'analog'
+  dateDisplay?: 'none' | 'day' | 'dayMonth'
+  note?: string
+  layoutOrder?: Array<'time' | 'date' | 'note'>
 }
 
 export type WidgetData =

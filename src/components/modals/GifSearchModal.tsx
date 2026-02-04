@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { searchGifs, type GifResult } from '../../lib/giphy'
 
 export default function GifSearchModal({
@@ -15,11 +15,13 @@ export default function GifSearchModal({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSearch = async () => {
+  const handleSearch = async (nextQuery?: string) => {
+    const q = nextQuery ?? query
+    if (!q.trim()) return
     setLoading(true)
     setError('')
     try {
-      const data = await searchGifs(query)
+      const data = await searchGifs(q)
       setResults(data)
     } catch (err: any) {
       setError(err.message || 'Unable to load GIFs')
@@ -27,6 +29,12 @@ export default function GifSearchModal({
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (open) {
+      handleSearch()
+    }
+  }, [open])
 
   if (!open) return null
 
@@ -38,9 +46,12 @@ export default function GifSearchModal({
             className="modal-input"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') handleSearch()
+            }}
             placeholder="Search GIFs"
           />
-          <button className="button" onClick={handleSearch} disabled={loading}>
+          <button className="button" onClick={() => handleSearch()} disabled={loading}>
             {loading ? 'Searching...' : 'Search'}
           </button>
           <button className="button ghost" onClick={onClose}>

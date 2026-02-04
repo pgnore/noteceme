@@ -126,7 +126,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       type: 'clock',
       title: 'Soft clock',
       layout: baseLayouts.clock,
-      data: { style: 'serif' },
+      data: { style: 'serif', dateDisplay: 'dayMonth', note: 'soft mornings', showTitle: true },
     },
     {
       id: nanoid(),
@@ -136,6 +136,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       layout: baseLayouts.habits,
       data: {
         weekStart: weekStart.toISOString(),
+        showTitle: true,
         habits: defaultHabits.map((name) => ({
           id: nanoid(),
           name,
@@ -150,6 +151,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       title: 'To-do list',
       layout: baseLayouts.todos,
       data: {
+        showTitle: true,
         items: [
           { id: nanoid(), text: 'Light a candle', done: false, order: 0 },
           { id: nanoid(), text: 'Plan cute outfit', done: true, order: 1 },
@@ -165,6 +167,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       layout: baseLayouts.notes,
       data: {
         title: 'Main character energy',
+        showTitle: true,
         content: defaultNotesContent,
       },
     },
@@ -178,6 +181,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
         url: '',
         caption: 'Drop an image or GIF',
         isGif: false,
+        showTitle: true,
       },
     },
     {
@@ -189,6 +193,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       data: {
         month: new Date().getMonth(),
         year: new Date().getFullYear(),
+        showTitle: true,
       },
     },
     {
@@ -200,6 +205,7 @@ export const createDefaultWidgets = (boardId: string): Widget[] => {
       data: {
         text: 'Feeling soft, cozy, and adored.',
         emoji: ':)',
+        showTitle: true,
       },
     },
   ]

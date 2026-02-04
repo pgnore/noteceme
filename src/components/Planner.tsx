@@ -13,7 +13,7 @@ import NotesWidget from './widgets/NotesWidget'
 import ImageWidget from './widgets/ImageWidget'
 import CalendarWidget from './widgets/CalendarWidget'
 import MoodWidget from './widgets/MoodWidget'
-import type { Widget, WidgetType } from '../types'
+import type { ClockData, Widget, WidgetType } from '../types'
 
 const ResponsiveGridLayout = WidthProvider(Responsive)
 
@@ -27,6 +27,8 @@ const widgetLabel: Record<WidgetType, string> = {
   mood: 'Mood/Quote',
 }
 
+const defaultClockOrder: Array<'time' | 'date' | 'note'> = ['time', 'date', 'note']
+
 export default function Planner() {
   const {
     board,
@@ -34,6 +36,7 @@ export default function Planner() {
     themeEditorOpen,
     setThemeEditorOpen,
     updateWidgetTitle,
+    updateWidgetData,
     removeWidget,
     applyLayouts,
     addWidget,
@@ -43,6 +46,7 @@ export default function Planner() {
 
   const layouts = useMemo(() => buildLayouts(widgets), [widgets])
   const [newWidgetType, setNewWidgetType] = useState<WidgetType>('notes')
+  const [settingsOpen, setSettingsOpen] = useState<Record<string, boolean>>({})
 
   if (!board) return null
 
@@ -50,6 +54,10 @@ export default function Planner() {
 
   const handleSignOut = async () => {
     await supabase?.auth.signOut()
+  }
+
+  const toggleSettings = (id: string) => {
+    setSettingsOpen((prev) => ({ ...prev, [id]: !prev[id] }))
   }
 
   const renderWidget = (widget: Widget) => {
@@ -71,6 +79,81 @@ export default function Planner() {
       default:
         return null
     }
+  }
+
+  const renderSettings = (widget: Widget) => {
+    if (widget.type === 'clock') {
+      const data = widget.data as ClockData
+      const order = data.layoutOrder ?? defaultClockOrder
+
+      const moveItem = (index: number, direction: number) => {
+        const next = [...order]
+        const target = index + direction
+        if (target < 0 || target >= next.length) return
+        const temp = next[index]
+        next[index] = next[target]
+        next[target] = temp
+        updateWidgetData(widget.id, { ...data, layoutOrder: next })
+      }
+
+      return (
+        <div className="settings-group">
+          <div className="settings-row">
+            <label>Clock style</label>
+            <select
+              value={data.style ?? 'serif'}
+              onChange={(event) => updateWidgetData(widget.id, { ...data, style: event.target.value as any })}
+            >
+              <option value="digital">Digital</option>
+              <option value="serif">Serif</option>
+              <option value="minimal">Minimal</option>
+              <option value="analog">Analog</option>
+            </select>
+          </div>
+          <div className="settings-row">
+            <label>Date display</label>
+            <select
+              value={data.dateDisplay ?? 'dayMonth'}
+              onChange={(event) =>
+                updateWidgetData(widget.id, { ...data, dateDisplay: event.target.value as any })
+              }
+            >
+              <option value="none">None</option>
+              <option value="day">Day only</option>
+              <option value="dayMonth">Day + month</option>
+            </select>
+          </div>
+          <div className="settings-row">
+            <label>Note</label>
+            <input
+              value={data.note ?? ''}
+              placeholder="Add a small note"
+              onChange={(event) => updateWidgetData(widget.id, { ...data, note: event.target.value })}
+            />
+          </div>
+          <div className="settings-row">
+            <label>Layout order</label>
+            <div className="order-list">
+              {order.map((item, index) => (
+                <div key={item} className="order-item">
+                  <span>{item}</span>
+                  <div className="order-buttons">
+                    <button className="button ghost" onClick={() => moveItem(index, -1)}>
+                      Up
+                    </button>
+                    <button className="button ghost" onClick={() => moveItem(index, 1)}>
+                      Down
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    return null
   }
 
   return (
@@ -132,17 +215,27 @@ export default function Planner() {
             applyLayouts(allLayouts)
           }}
         >
-          {widgets.map((widget) => (
-            <div key={widget.id}>
-              <WidgetFrame
-                title={widget.title}
-                onTitleChange={(value) => updateWidgetTitle(widget.id, value)}
-                onRemove={() => removeWidget(widget.id)}
-              >
-                {renderWidget(widget)}
-              </WidgetFrame>
-            </div>
-          ))}
+          {widgets.map((widget) => {
+            const showTitle = (widget.data as any).showTitle !== false
+            return (
+              <div key={widget.id}>
+                <WidgetFrame
+                  title={widget.title}
+                  showTitle={showTitle}
+                  onTitleChange={(value) => updateWidgetTitle(widget.id, value)}
+                  onShowTitleChange={(value) =>
+                    updateWidgetData(widget.id, { ...(widget.data as any), showTitle: value })
+                  }
+                  onRemove={() => removeWidget(widget.id)}
+                  settingsOpen={!!settingsOpen[widget.id]}
+                  onToggleSettings={() => toggleSettings(widget.id)}
+                  settings={renderSettings(widget)}
+                >
+                  {renderWidget(widget)}
+                </WidgetFrame>
+              </div>
+            )
+          })}
         </ResponsiveGridLayout>
       </div>
 
