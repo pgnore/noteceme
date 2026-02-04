@@ -31,8 +31,6 @@ export default function Planner() {
   const {
     board,
     widgets,
-    editMode,
-    setEditMode,
     themeEditorOpen,
     setThemeEditorOpen,
     updateWidgetTitle,
@@ -83,12 +81,6 @@ export default function Planner() {
           notece.me
         </div>
         <div className="header-actions">
-          <button
-            className={editMode ? 'button' : 'button secondary'}
-            onClick={() => setEditMode(!editMode)}
-          >
-            {editMode ? 'Done editing' : 'Edit layout'}
-          </button>
           <button className="button ghost" onClick={() => setThemeEditorOpen(!themeEditorOpen)}>
             Theme
           </button>
@@ -133,13 +125,11 @@ export default function Planner() {
           rowHeight={34}
           margin={[gap, gap]}
           containerPadding={[gap, gap]}
-          isDraggable={editMode}
-          isResizable={editMode}
+          isDraggable
+          isResizable
           draggableHandle=".widget-header"
           onLayoutChange={(_layout, allLayouts) => {
-            if (editMode) {
-              applyLayouts(allLayouts)
-            }
+            applyLayouts(allLayouts)
           }}
         >
           {widgets.map((widget) => (
@@ -148,7 +138,6 @@ export default function Planner() {
                 title={widget.title}
                 onTitleChange={(value) => updateWidgetTitle(widget.id, value)}
                 onRemove={() => removeWidget(widget.id)}
-                editMode={editMode}
               >
                 {renderWidget(widget)}
               </WidgetFrame>

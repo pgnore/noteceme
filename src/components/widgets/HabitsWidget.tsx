@@ -36,6 +36,18 @@ export default function HabitsWidget({ widget }: { widget: Widget }) {
     setNewHabit('')
   }
 
+  const updateHabitName = (habitId: string, value: string) => {
+    const habits = data.habits.map((habit) =>
+      habit.id === habitId ? { ...habit, name: value } : habit
+    )
+    updateWidgetData(widget.id, { ...data, habits })
+  }
+
+  const removeHabit = (habitId: string) => {
+    const habits = data.habits.filter((habit) => habit.id !== habitId)
+    updateWidgetData(widget.id, { ...data, habits })
+  }
+
   const resetWeek = () => {
     const freshWeek = startOfWeek(new Date(), { weekStartsOn })
     const habits = data.habits.map((habit) => ({
@@ -53,58 +65,67 @@ export default function HabitsWidget({ widget }: { widget: Widget }) {
   const overall = possible ? Math.round((totalChecks / possible) * 100) : 0
 
   return (
-    <div>
-      <table className="habit-table">
-        <thead>
-          <tr>
-            <th>Habit</th>
-            {days.map((day) => (
-              <th key={day.toISOString()}>{format(day, 'EEE')}</th>
-            ))}
-            <th>Efficiency</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.habits.map((habit) => {
-            const total = habit.checks.filter(Boolean).length
-            const efficiency = Math.round((total / 7) * 100)
-            return (
-              <tr key={habit.id}>
-                <td>
-                  <div className="habit-pill">
-                    <span>{habit.name}</span>
-                  </div>
-                </td>
-                {habit.checks.map((checked, index) => (
-                  <td key={index}>
-                    <span
-                      className={`checkbox ${checked ? 'checked' : ''}`}
-                      onClick={() => toggleCheck(habit.id, index)}
-                    >
-                      {checked ? 'x' : ''}
-                    </span>
+    <div className="widget-fill">
+      <div className="widget-scroll">
+        <table className="habit-table">
+          <thead>
+            <tr>
+              <th>Habit</th>
+              {days.map((day) => (
+                <th key={day.toISOString()}>{format(day, 'EEE')}</th>
+              ))}
+              <th>Efficiency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.habits.map((habit) => {
+              const total = habit.checks.filter(Boolean).length
+              const efficiency = Math.round((total / 7) * 100)
+              return (
+                <tr key={habit.id}>
+                  <td>
+                    <div className="habit-pill">
+                      <input
+                        className="habit-input"
+                        value={habit.name}
+                        onChange={(event) => updateHabitName(habit.id, event.target.value)}
+                      />
+                      <button className="icon-button" onClick={() => removeHabit(habit.id)}>
+                        x
+                      </button>
+                    </div>
                   </td>
-                ))}
-                <td>{efficiency}%</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+                  {habit.checks.map((checked, index) => (
+                    <td key={index}>
+                      <span
+                        className={`checkbox ${checked ? 'checked' : ''}`}
+                        onClick={() => toggleCheck(habit.id, index)}
+                      >
+                        {checked ? 'x' : ''}
+                      </span>
+                    </td>
+                  ))}
+                  <td>{efficiency}%</td>
+                </tr>
+              )}
+            )}
+          </tbody>
+        </table>
+      </div>
       <p style={{ marginTop: 8, color: 'var(--muted)', fontSize: 'var(--font-size-small)' }}>
         Weekly efficiency: {overall}% complete
       </p>
-      <div style={{ marginTop: 12, display: 'flex', gap: 8, alignItems: 'center' }}>
+      <div className="widget-footer">
         <input
           value={newHabit}
           onChange={(event) => setNewHabit(event.target.value)}
           placeholder="Add a habit"
           className="mood-input"
         />
-        <button className="widget-control" onClick={addHabit}>
+        <button className="button soft" onClick={addHabit}>
           Add
         </button>
-        <button className="widget-control" onClick={resetWeek}>
+        <button className="button ghost" onClick={resetWeek}>
           New week
         </button>
       </div>

@@ -22,39 +22,43 @@ export default function ImageWidget({ widget }: { widget: Widget }) {
   }
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-      {data.url ? (
-        <div className="image-tile">
-          <img src={data.url} alt={data.caption || 'Moodboard'} />
-        </div>
-      ) : (
-        <div className="image-tile">
-          <p>{data.caption || 'Drop a cozy image or GIF here.'}</p>
-        </div>
-      )}
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-        <button className="widget-control" onClick={() => fileRef.current?.click()}>
-          Upload
-        </button>
-        <button className="widget-control" onClick={() => setGifOpen(true)}>
-          GIF search
-        </button>
-        <button
-          className="widget-control"
-          onClick={() => {
-            const url = window.prompt('Paste an image or GIF URL')
-            if (url) updateUrl(url, url.endsWith('.gif'))
-          }}
-        >
-          Paste URL
-        </button>
+    <div className="widget-fill">
+      <div className="widget-scroll">
+        {data.url ? (
+          <div className="image-tile">
+            <img src={data.url} alt={data.caption || 'Moodboard'} />
+          </div>
+        ) : (
+          <div className="image-tile empty">
+            <p>{data.caption || 'Drop a cozy image or GIF here.'}</p>
+          </div>
+        )}
       </div>
-      <input
-        className="mood-input"
-        value={data.caption ?? ''}
-        placeholder="Caption"
-        onChange={(event) => updateWidgetData(widget.id, { ...data, caption: event.target.value })}
-      />
+      <div className="widget-footer">
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button className="button soft" onClick={() => fileRef.current?.click()}>
+            Upload
+          </button>
+          <button className="button ghost" onClick={() => setGifOpen(true)}>
+            GIF search
+          </button>
+          <button
+            className="button ghost"
+            onClick={() => {
+              const url = window.prompt('Paste an image or GIF URL')
+              if (url) updateUrl(url, url.endsWith('.gif'))
+            }}
+          >
+            Paste URL
+          </button>
+        </div>
+        <input
+          className="mood-input"
+          value={data.caption ?? ''}
+          placeholder="Caption"
+          onChange={(event) => updateWidgetData(widget.id, { ...data, caption: event.target.value })}
+        />
+      </div>
       <input
         ref={fileRef}
         type="file"

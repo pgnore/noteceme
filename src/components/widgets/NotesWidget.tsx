@@ -12,6 +12,15 @@ import { useBoardStore } from '../../store/boardStore'
 import { uploadMedia } from '../../lib/storage'
 import GifSearchModal from '../modals/GifSearchModal'
 
+const toolbarActions = [
+  { label: 'Bold', action: (editor: any) => editor.chain().focus().toggleBold().run() },
+  { label: 'Italic', action: (editor: any) => editor.chain().focus().toggleItalic().run() },
+  { label: 'Underline', action: (editor: any) => editor.chain().focus().toggleUnderline().run() },
+  { label: 'List', action: (editor: any) => editor.chain().focus().toggleBulletList().run() },
+  { label: 'Checklist', action: (editor: any) => editor.chain().focus().toggleTaskList().run() },
+  { label: 'H2', action: (editor: any) => editor.chain().focus().toggleHeading({ level: 2 }).run() },
+]
+
 export default function NotesWidget({ widget }: { widget: Widget }) {
   const { updateWidgetData, session } = useBoardStore()
   const data = widget.data as NotesData
@@ -48,17 +57,15 @@ export default function NotesWidget({ widget }: { widget: Widget }) {
   if (!editor) return null
 
   return (
-    <div>
-      <div className="notes-toolbar">
-        <button onClick={() => editor.chain().focus().toggleBold().run()}>Bold</button>
-        <button onClick={() => editor.chain().focus().toggleItalic().run()}>Italic</button>
-        <button onClick={() => editor.chain().focus().toggleUnderline().run()}>Underline</button>
-        <button onClick={() => editor.chain().focus().toggleBulletList().run()}>List</button>
-        <button onClick={() => editor.chain().focus().toggleTaskList().run()}>Checklist</button>
-        <button onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
-          H2
-        </button>
+    <div className="widget-fill">
+      <div className="notes-toolbar modern">
+        {toolbarActions.map((item) => (
+          <button key={item.label} onClick={() => item.action(editor)} className="toolbar-pill">
+            {item.label}
+          </button>
+        ))}
         <button
+          className="toolbar-pill"
           onClick={() => {
             const url = window.prompt('Paste a link')
             if (url) {
@@ -68,10 +75,14 @@ export default function NotesWidget({ widget }: { widget: Widget }) {
         >
           Link
         </button>
-        <button onClick={() => fileRef.current?.click()}>Image</button>
-        <button onClick={() => setGifOpen(true)}>GIF</button>
+        <button className="toolbar-pill" onClick={() => fileRef.current?.click()}>
+          Image
+        </button>
+        <button className="toolbar-pill" onClick={() => setGifOpen(true)}>
+          GIF
+        </button>
       </div>
-      <EditorContent editor={editor} className="tiptap" />
+      <EditorContent editor={editor} className="tiptap modern" />
       <input
         ref={fileRef}
         type="file"

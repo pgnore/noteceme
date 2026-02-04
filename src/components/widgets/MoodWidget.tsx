@@ -6,7 +6,7 @@ export default function MoodWidget({ widget }: { widget: Widget }) {
   const data = widget.data as MoodData
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div className="widget-fill">
       <input
         className="mood-input"
         value={data.emoji ?? ''}

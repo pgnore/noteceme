@@ -39,46 +39,48 @@ export default function CalendarWidget({ widget }: { widget: Widget }) {
   }
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <button className="widget-control" onClick={() => changeMonth(-1)}>
-          Prev
-        </button>
-        <strong>{format(monthDate, 'MMMM yyyy')}</strong>
-        <button className="widget-control" onClick={() => changeMonth(1)}>
-          Next
-        </button>
-      </div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: 6,
-          marginTop: 12,
-          fontSize: 'var(--font-size-small)',
-        }}
-      >
-        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((label) => (
-          <div key={label} style={{ textAlign: 'center', color: 'var(--muted)' }}>
-            {label}
-          </div>
-        ))}
-        {rows.map((week, index) =>
-          week.map((date) => (
-            <div
-              key={`${index}-${date.toISOString()}`}
-              style={{
-                textAlign: 'center',
-                padding: 6,
-                borderRadius: 10,
-                background: isToday(date) ? 'rgba(240, 106, 160, 0.2)' : 'transparent',
-                color: isSameMonth(date, monthDate) ? 'var(--text)' : 'var(--muted)',
-              }}
-            >
-              {format(date, 'd')}
+    <div className="widget-fill">
+      <div className="widget-scroll">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <button className="button ghost" onClick={() => changeMonth(-1)}>
+            Prev
+          </button>
+          <strong>{format(monthDate, 'MMMM yyyy')}</strong>
+          <button className="button ghost" onClick={() => changeMonth(1)}>
+            Next
+          </button>
+        </div>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, 1fr)',
+            gap: 6,
+            marginTop: 12,
+            fontSize: 'var(--font-size-small)',
+          }}
+        >
+          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((label) => (
+            <div key={label} style={{ textAlign: 'center', color: 'var(--muted)' }}>
+              {label}
             </div>
-          ))
-        )}
+          ))}
+          {rows.map((week, index) =>
+            week.map((date) => (
+              <div
+                key={`${index}-${date.toISOString()}`}
+                style={{
+                  textAlign: 'center',
+                  padding: 6,
+                  borderRadius: 10,
+                  background: isToday(date) ? 'rgba(240, 106, 160, 0.2)' : 'transparent',
+                  color: isSameMonth(date, monthDate) ? 'var(--text)' : 'var(--muted)',
+                }}
+              >
+                {format(date, 'd')}
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   )

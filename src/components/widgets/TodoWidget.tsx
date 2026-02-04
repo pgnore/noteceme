@@ -22,6 +22,11 @@ export default function TodoWidget({ widget }: { widget: Widget }) {
     updateWidgetData(widget.id, { ...data, items })
   }
 
+  const removeItem = (id: string) => {
+    const items = data.items.filter((item) => item.id !== id)
+    updateWidgetData(widget.id, { ...data, items })
+  }
+
   const addItem = () => {
     if (!text.trim()) return
     const item = { id: nanoid(), text: text.trim(), done: false, order: data.items.length }
@@ -30,20 +35,25 @@ export default function TodoWidget({ widget }: { widget: Widget }) {
   }
 
   return (
-    <div>
-      {data.items.map((item) => (
-        <div key={item.id} className={`todo-item ${item.done ? 'done' : ''}`}>
-          <span className={`checkbox ${item.done ? 'checked' : ''}`} onClick={() => toggle(item.id)}>
-            {item.done ? 'x' : ''}
-          </span>
-          <input
-            type="text"
-            value={item.text}
-            onChange={(event) => updateText(item.id, event.target.value)}
-          />
-        </div>
-      ))}
-      <div className="todo-item">
+    <div className="widget-fill">
+      <div className="widget-scroll">
+        {data.items.map((item) => (
+          <div key={item.id} className={`todo-item ${item.done ? 'done' : ''}`}>
+            <span className={`checkbox ${item.done ? 'checked' : ''}`} onClick={() => toggle(item.id)}>
+              {item.done ? 'x' : ''}
+            </span>
+            <input
+              type="text"
+              value={item.text}
+              onChange={(event) => updateText(item.id, event.target.value)}
+            />
+            <button className="icon-button" onClick={() => removeItem(item.id)}>
+              x
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="widget-footer">
         <input
           type="text"
           placeholder="Add a task"
@@ -53,7 +63,7 @@ export default function TodoWidget({ widget }: { widget: Widget }) {
             if (event.key === 'Enter') addItem()
           }}
         />
-        <button className="widget-control" onClick={addItem}>
+        <button className="button soft" onClick={addItem}>
           Add
         </button>
       </div>

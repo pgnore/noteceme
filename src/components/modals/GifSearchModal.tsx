@@ -33,9 +33,9 @@ export default function GifSearchModal({
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div className="modal-header">
           <input
-            className="mood-input"
+            className="modal-input"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search GIFs"

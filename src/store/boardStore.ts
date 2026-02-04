@@ -54,12 +54,10 @@ export type BoardState = {
   session: any | null
   board: Board | null
   widgets: Widget[]
-  editMode: boolean
   themeEditorOpen: boolean
   demoMode: boolean
   setSession: (session: any | null) => void
   loadBoard: (userId: string) => Promise<void>
-  setEditMode: (value: boolean) => void
   setThemeEditorOpen: (value: boolean) => void
   updateBoard: (partial: Partial<Board>) => void
   updateTheme: (theme: Theme) => void
@@ -94,7 +92,6 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   session: null,
   board: null,
   widgets: [],
-  editMode: false,
   themeEditorOpen: false,
   demoMode: isDemoMode,
   setSession: (session) => set({ session }),
@@ -160,7 +157,6 @@ export const useBoardStore = create<BoardState>((set, get) => ({
       set({ status: 'error', error: error?.message ?? 'Unable to load board' })
     }
   },
-  setEditMode: (value) => set({ editMode: value }),
   setThemeEditorOpen: (value) => set({ themeEditorOpen: value }),
   updateBoard: (partial) => {
     const board = get().board
